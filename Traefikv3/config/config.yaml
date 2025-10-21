@@ -18,20 +18,20 @@ http:
         scheme: https
         permanent: true
 
-  routers:
-    portainer:
-      entryPoints:
-        - "https"
-      rule: "Host(`portainer.commitandpray.duckdns.org`)"
-      middlewares:
-        - default-security-headers
-        - https-redirectscheme
-      tls: {}
-      service: portainer
+  # routers:
+  #   portainer:
+  #     entryPoints:
+  #       - "https"
+  #     rule: "Host(`portainer.commitandpray.duckdns.org`)"
+  #     middlewares:
+  #       - default-security-headers
+  #       - https-redirectscheme
+  #     tls: {}
+  #     service: portainer
 
-  services:
-    portainer:
-      loadBalancer:
-        servers:
-          - url: "https://192.168.1.39:9443"
-        passHostHeader: true
+  # services:
+  #   portainer:
+  #     loadBalancer:
+  #       servers:
+  #         - url: "https://192.168.1.39:9443"
+  #       passHostHeader: true
