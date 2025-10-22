@@ -12,8 +12,8 @@ services:
       PGID: 1000
       TZ: Asia/Kolkata
     volumes:
-      - /home/ubuntu/docker/arr-stack/sabnzbd:/config
-      - /home/ubuntu/docker/arr-stack/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/sabnzbd:/config
+      - /home/satty008/repos/storage/arr-stack/downloads:/downloads
     restart: unless-stopped
     networks:
       - proxy
@@ -40,8 +40,8 @@ services:
       TZ: Asia/Kolkata
       AUTO_UPDATE: "true"
     volumes:
-      - /home/ubuntu/docker/arr-stack/jackett/data:/config
-      - /home/ubuntu/docker/arr-stack/jackett/blackhole:/downloads
+      - /home/satty008/repos/storage/arr-stack/jackett/data:/config
+      - /home/satty008/repos/storage/arr-stack/jackett/blackhole:/downloads
     restart: unless-stopped
     networks:
       - proxy
@@ -67,9 +67,9 @@ services:
       PGID: 1000
       TZ: Asia/Kolkata
     volumes:
-      - /home/ubuntu/docker/arr-stack/sonarr/data:/config
-      - /home/ubuntu/docker/arr-stack/sonarr/tvseries:/tv
-      - /home/ubuntu/docker/arr-stack/sonarr/downloadclient-downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/sonarr/data:/config
+      - /home/satty008/repos/storage/arr-stack/sonarr/tvseries:/tv
+      - /home/satty008/repos/storage/arr-stack/sonarr/downloadclient-downloads:/downloads
     restart: unless-stopped
     networks:
       - proxy
@@ -95,8 +95,8 @@ services:
       PGID: 1000
       TZ: Asia/Kolkata
     volumes:
-      - /home/ubuntu/docker/arr-stack/radarr/data:/config
-      - /home/ubuntu/docker/arr-stack/qbittorrent/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/radarr/data:/config
+      - /home/satty008/repos/storage/arr-stack/qbittorrent/downloads:/downloads
     restart: unless-stopped
     networks:
       - proxy
@@ -122,7 +122,7 @@ services:
       PGID: 1000
       TZ: Asia/Kolkata
     volumes:
-      - /home/ubuntu/docker/arr-stack/prowlarr/data:/config
+      - /home/satty008/repos/storage/arr-stack/prowlarr/data:/config
     restart: unless-stopped
     networks:
       - proxy
@@ -147,7 +147,7 @@ services:
       HOMEPAGE_ALLOWED_HOSTS: homepage-arr.commitandpray.duckdns.org
       TZ: Asia/Kolkata
     volumes:
-      - /home/ubuntu/docker/arr-stack/homepage:/app/config
+      - /home/satty008/repos/storage/arr-stack/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
     networks:
@@ -170,8 +170,8 @@ services:
     environment:
       TZ: Asia/Kolkata
     volumes:
-      - /home/ubuntu/docker/arr-stack/jellyfin/config:/config
-      - /home/ubuntu/docker/arr-stack/jellyfin/cache:/cache
+      - /home/satty008/repos/storage/arr-stack/jellyfin/config:/config
+      - /home/satty008/repos/storage/arr-stack/jellyfin/cache:/cache
       - /home/ubuntu/media:/media
     restart: unless-stopped
     networks:
@@ -201,8 +201,8 @@ services:
       TZ: Asia/Kolkata
       WEBUI_PORT: 8085
     volumes:
-      - /home/ubuntu/docker/arr-stack/qbittorrent:/config
-      - /home/ubuntu/docker/arr-stack/qbittorrent/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/qbittorrent:/config
+      - /home/satty008/repos/storage/arr-stack/qbittorrent/downloads:/downloads
     restart: always
     networks:
       - proxy
