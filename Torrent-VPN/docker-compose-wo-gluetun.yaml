@@ -10,7 +10,7 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
-      TZ: Asia/Kolkata
+      TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/sabnzbd:/config
       - /home/satty008/repos/storage/arr-stack/downloads:/downloads
@@ -37,7 +37,7 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
-      TZ: Asia/Kolkata
+      TZ: Europe/Berlin
       AUTO_UPDATE: "true"
     volumes:
       - /home/satty008/repos/storage/arr-stack/jackett/data:/config
@@ -65,7 +65,7 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
-      TZ: Asia/Kolkata
+      TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/sonarr/data:/config
       - /home/satty008/repos/storage/arr-stack/sonarr/tvseries:/tv
@@ -93,7 +93,7 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
-      TZ: Asia/Kolkata
+      TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/radarr/data:/config
       - /home/satty008/repos/storage/arr-stack/qbittorrent/downloads:/downloads
@@ -120,7 +120,7 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
-      TZ: Asia/Kolkata
+      TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/prowlarr/data:/config
     restart: unless-stopped
@@ -145,7 +145,7 @@ services:
       PUID: 1000
       PGID: 1000
       HOMEPAGE_ALLOWED_HOSTS: homepage-arr.commitandpray.duckdns.org
-      TZ: Asia/Kolkata
+      TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -168,7 +168,7 @@ services:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
     environment:
-      TZ: Asia/Kolkata
+      TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/jellyfin/config:/config
       - /home/satty008/repos/storage/arr-stack/jellyfin/cache:/cache
@@ -198,7 +198,7 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
-      TZ: Asia/Kolkata
+      TZ: Europe/Berlin
       WEBUI_PORT: 8085
     volumes:
       - /home/satty008/repos/storage/arr-stack/qbittorrent:/config

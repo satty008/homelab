@@ -25,12 +25,12 @@ services:
     #- "443:443/tcp"
     environment:
       TZ: 'Europe/Berlin'
-      WEBPASSWORD: 'password'
+      FTLCONF_webserver_api_password: ''
       PIHOLE_DNS_: '172.23.0.8#5053'
       #DNSMASQ_LISTENING: all   # <-- allows Pi-hole to answer outside its container subnet
     volumes:
-      - '/home/ubuntu/docker/pihole/etc-pihole/:/etc/pihole/'
-      - '/home/ubuntu/docker/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+      - '/home/satty008/repos/pihole/etc-pihole/:/etc/pihole/'
+      - '/home/satty008/repos/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
