@@ -1,0 +1,79 @@
+# === Generic system/editor cruft ===
+*.swp
+*.swo
+*.bak
+*.log
+*.tmp
+*.pid
+.DS_Store
+Thumbs.db
+
+# === Environment & secrets ===
+.env
+.env.*
+*.secret
+*.key
+*.crt
+*.pem
+secrets.yaml
+config.local.yaml
+
+# === Docker ===
+docker-compose.override.yaml
+docker-compose.*.yaml
+*/tmp/
+*/cache/
+*/logs/
+*/data/
+*/downloads/
+*/config.json
+*/.env
+
+# === Unbound ===
+Unbound/unbound.pid
+Unbound/var/
+Unbound/*.log
+
+# === Torrent-VPN ===
+Torrent-VPN/tmp/
+Torrent-VPN/*.pid
+Torrent-VPN/*.log
+Torrent-VPN/*.bak
+Torrent-VPN/docker-compose-wo-gluetun.yaml  # local variant, optional
+
+# === Nginx Proxy Manager (NPM) ===
+NginxProxyManager/data/
+NginxProxyManager/letsencrypt/
+NginxProxyManager/logs/
+NginxProxyManager/nginx/
+
+# === Pi-hole ===
+Pi-hole/etc-pihole/
+Pi-hole/etc-dnsmasq.d/
+Pi-hole/logs/
+Pi-hole/gravity.db
+Pi-hole/pihole-FTL.db
+
+# === Proxmox / VM configs ===
+*.qcow2
+*.img
+*.iso
+*.vmdk
+*.vdi
+*.vhd
+*.ova
+*.ovf
+*.tar
+*.zip
+
+# === Backup files ===
+*.local.yaml
+*.override.yaml
+*.backup
+*.old
+*.save
+
+# === IDE / tooling ===
+.vscode/
+.idea/
+*.code-workspace
