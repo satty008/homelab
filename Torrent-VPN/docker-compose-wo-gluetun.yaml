@@ -1,6 +1,3 @@
-# docker-compose-wo-gluetun.yaml
-# Gluetun-less ARR + Jellyfin stack. Services join an external 'proxy' network for Traefik.
-
 services:
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest
@@ -17,6 +14,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sabnzbd.entrypoints=http"
@@ -45,6 +45,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jackett.entrypoints=http"
@@ -73,6 +76,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.entrypoints=http"
@@ -100,6 +106,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.entrypoints=http"
@@ -110,6 +119,37 @@ services:
       - "traefik.http.routers.radarr-secure.tls=true"
       - "traefik.http.routers.radarr-secure.service=radarr"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+      - "traefik.docker.network=proxy"
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    ports:
+      - "6767:6767"
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Berlin
+    volumes:
+      - /home/satty008/repos/storage/arr-stack/bazarr/data:/config
+      - /home/satty008/repos/storage/arr-stack/sonarr/tvseries:/tv
+      - /home/satty008/repos/storage/arr-stack/radarr/movies:/movies
+    restart: unless-stopped
+    networks:
+      - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bazarr.entrypoints=http"
+      - "traefik.http.routers.bazarr.rule=Host(`bazarr.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.bazarr.middlewares=default-security-headers@file,https-redirectscheme@file"
+      - "traefik.http.routers.bazarr-secure.entrypoints=https"
+      - "traefik.http.routers.bazarr-secure.rule=Host(`bazarr.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.bazarr-secure.tls=true"
+      - "traefik.http.routers.bazarr-secure.service=bazarr"
+      - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
       - "traefik.docker.network=proxy"
 
   prowlarr:
@@ -126,6 +166,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.entrypoints=http"
@@ -152,6 +195,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage-arr.entrypoints=http"
@@ -176,6 +222,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyfin-arr.entrypoints=http"
@@ -188,13 +237,46 @@ services:
       - "traefik.http.services.jellyfin-arr.loadbalancer.server.port=8096"
       - "traefik.docker.network=proxy"
 
+  jellyseer:
+    image: ghcr.io/fallenbagel/jellyseerr:latest
+    container_name: jellyseer
+    ports:
+      - "7070:7070"
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Berlin
+      JELLYFIN_URL: http://jellyfin:8096
+    restart: unless-stopped
+    networks:
+      - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyseer.entrypoints=http"
+      - "traefik.http.routers.jellyseer.rule=Host(`jellyseer.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.jellyseer.middlewares=default-security-headers@file,https-redirectscheme@file"
+      - "traefik.http.routers.jellyseer-secure.entrypoints=https"
+      - "traefik.http.routers.jellyseer-secure.rule=Host(`jellyseer.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.jellyseer-secure.tls=true"
+      - "traefik.http.routers.jellyseer-secure.service=jellyseer"
+      - "traefik.http.services.jellyseer.loadbalancer.server.port=7070"
+      - "traefik.docker.network=proxy"
+
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
+  #  ports:
+  #    - "6881:6881"
+  #    - "6881:6881/udp"
+  #    - "8085:8085"
     ports:
-      - "6881:6881"
-      - "6881:6881/udp"
+      - "49160:6881/tcp"
+      - "49160:6881/udp"
       - "8085:8085"
+
     environment:
       PUID: 1000
       PGID: 1000
@@ -206,6 +288,9 @@ services:
     restart: always
     networks:
       - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.qbittorrent.entrypoints=http"
@@ -218,6 +303,129 @@ services:
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8085"
       - "traefik.docker.network=proxy"
 
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - LOG_HTML=false
+      - TZ=Europe/Berlin
+    ports:
+      - "8191:8191"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flaresolverr.entrypoints=http"
+      - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.flaresolverr.middlewares=default-security-headers@file,https-redirectscheme@file"
+      - "traefik.http.routers.flaresolverr-secure.entrypoints=https"
+      - "traefik.http.routers.flaresolverr-secure.rule=Host(`flaresolverr.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.flaresolverr-secure.tls=true"
+      - "traefik.http.routers.flaresolverr-secure.service=flaresolverr"
+      - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
+      - "traefik.docker.network=proxy"
+
+  lazylibrarian:
+    image: linuxserver/lazylibrarian:latest
+    container_name: lazylibrarian
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Berlin
+    volumes:
+      - /home/satty008/repos/storage/arr-stack/lazylibrarian/config:/config
+      - /home/satty008/repos/storage/arr-stack/lazylibrarian/books:/books
+      - /home/satty008/repos/storage/arr-stack/lazylibrarian/downloads:/downloads
+    ports:
+      - "5299:5299"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lazylibrarian.entrypoints=http"
+      - "traefik.http.routers.lazylibrarian.rule=Host(`lazylibrarian.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.lazylibrarian.middlewares=default-security-headers@file,https-redirectscheme@file"
+      - "traefik.http.routers.lazylibrarian-secure.entrypoints=https"
+      - "traefik.http.routers.lazylibrarian-secure.rule=Host(`lazylibrarian.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.lazylibrarian-secure.tls=true"
+      - "traefik.http.routers.lazylibrarian-secure.service=lazylibrarian"
+      - "traefik.http.services.lazylibrarian.loadbalancer.server.port=5299"
+      - "traefik.docker.network=proxy"
+
+  whisparr:
+    image: ghcr.io/thespad/whisparr:latest
+    container_name: whisparr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Berlin
+    volumes:
+      - /home/satty008/repos/storage/arr-stack/whisparr/config:/config
+      - /home/satty008/repos/storage/arr-stack/whisparr/audiobooks:/audiobooks
+      - /home/satty008/repos/storage/arr-stack/whisparr/downloads:/downloads
+    ports:
+      - "6969:6969"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whisparr.entrypoints=http"
+      - "traefik.http.routers.whisparr.rule=Host(`whisparr.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.whisparr.middlewares=default-security-headers@file,https-redirectscheme@file"
+      - "traefik.http.routers.whisparr-secure.entrypoints=https"
+      - "traefik.http.routers.whisparr-secure.rule=Host(`whisparr.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.whisparr-secure.tls=true"
+      - "traefik.http.routers.whisparr-secure.service=whisparr"
+      - "traefik.http.services.whisparr.loadbalancer.server.port=6969"
+      - "traefik.docker.network=proxy"
+
+  mylar3:
+    image: linuxserver/mylar3:latest
+    container_name: mylar3
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Berlin
+    volumes:
+      - /home/satty008/repos/storage/arr-stack/mylar3/config:/config
+      - /home/satty008/repos/storage/arr-stack/mylar3/comics:/comics
+      - /home/satty008/repos/storage/arr-stack/mylar3/downloads:/downloads
+    ports:
+      - "8090:8090"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - unbound_dns_net
+    dns:
+      - 172.23.0.7
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mylar3.entrypoints=http"
+      - "traefik.http.routers.mylar3.rule=Host(`mylar3.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.mylar3.middlewares=default-security-headers@file,https-redirectscheme@file"
+      - "traefik.http.routers.mylar3-secure.entrypoints=https"
+      - "traefik.http.routers.mylar3-secure.rule=Host(`mylar3.commitandpray.duckdns.org`)"
+      - "traefik.http.routers.mylar3-secure.tls=true"
+      - "traefik.http.routers.mylar3-secure.service=mylar3"
+      - "traefik.http.services.mylar3.loadbalancer.server.port=8090"
+      - "traefik.docker.network=proxy"
+
+
 networks:
   proxy:
+    external: true
+  unbound_dns_net:
     external: true
