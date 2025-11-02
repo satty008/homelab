@@ -10,7 +10,7 @@ services:
       TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/sabnzbd:/config
-      - /home/satty008/repos/storage/arr-stack/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/media/downloads:/downloads
     restart: unless-stopped
     networks:
       - proxy
@@ -41,7 +41,7 @@ services:
       AUTO_UPDATE: "true"
     volumes:
       - /home/satty008/repos/storage/arr-stack/jackett/data:/config
-      - /home/satty008/repos/storage/arr-stack/jackett/blackhole:/downloads
+      - /home/satty008/repos/storage/arr-stack/media/blackhole:/downloads
     restart: unless-stopped
     networks:
       - proxy
@@ -71,8 +71,8 @@ services:
       TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/sonarr/data:/config
-      - /home/satty008/repos/storage/arr-stack/sonarr/tvseries:/tv
-      - /home/satty008/repos/storage/arr-stack/sonarr/downloadclient-downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/media/tvseries:/tv
+      - /home/satty008/repos/storage/arr-stack/media/downloads:/downloads
     restart: unless-stopped
     networks:
       - proxy
@@ -102,7 +102,8 @@ services:
       TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/radarr/data:/config
-      - /home/satty008/repos/storage/arr-stack/qbittorrent/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/media/movies:/movies
+      - /home/satty008/repos/storage/arr-stack/media/downloads:/downloads
     restart: unless-stopped
     networks:
       - proxy
@@ -132,8 +133,8 @@ services:
       TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/bazarr/data:/config
-      - /home/satty008/repos/storage/arr-stack/sonarr/tvseries:/tv
-      - /home/satty008/repos/storage/arr-stack/radarr/movies:/movies
+      - /home/satty008/repos/storage/arr-stack/media/tvseries:/tv
+      - /home/satty008/repos/storage/arr-stack/media/movies:/movies
     restart: unless-stopped
     networks:
       - proxy
@@ -163,6 +164,7 @@ services:
       TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/prowlarr/data:/config
+      - /home/satty008/repos/storage/arr-stack/media:/data
     restart: unless-stopped
     networks:
       - proxy
@@ -218,7 +220,7 @@ services:
     volumes:
       - /home/satty008/repos/storage/arr-stack/jellyfin/config:/config
       - /home/satty008/repos/storage/arr-stack/jellyfin/cache:/cache
-      - /home/ubuntu/media:/media
+      - /home/satty008/repos/storage/arr-stack/media:/media
     restart: unless-stopped
     networks:
       - proxy
@@ -268,15 +270,10 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
-  #  ports:
-  #    - "6881:6881"
-  #    - "6881:6881/udp"
-  #    - "8085:8085"
     ports:
       - "49160:6881/tcp"
       - "49160:6881/udp"
       - "8085:8085"
-
     environment:
       PUID: 1000
       PGID: 1000
@@ -284,7 +281,7 @@ services:
       WEBUI_PORT: 8085
     volumes:
       - /home/satty008/repos/storage/arr-stack/qbittorrent:/config
-      - /home/satty008/repos/storage/arr-stack/qbittorrent/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/media/downloads:/downloads
     restart: always
     networks:
       - proxy
@@ -339,8 +336,8 @@ services:
       TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/lazylibrarian/config:/config
-      - /home/satty008/repos/storage/arr-stack/lazylibrarian/books:/books
-      - /home/satty008/repos/storage/arr-stack/lazylibrarian/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/media/books:/books
+      - /home/satty008/repos/storage/arr-stack/media/downloads:/downloads
     ports:
       - "5299:5299"
     restart: unless-stopped
@@ -370,8 +367,8 @@ services:
       TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/whisparr/config:/config
-      - /home/satty008/repos/storage/arr-stack/whisparr/audiobooks:/audiobooks
-      - /home/satty008/repos/storage/arr-stack/whisparr/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/media/audiobooks:/audiobooks
+      - /home/satty008/repos/storage/arr-stack/media/downloads:/downloads
     ports:
       - "6969:6969"
     restart: unless-stopped
@@ -401,8 +398,8 @@ services:
       TZ: Europe/Berlin
     volumes:
       - /home/satty008/repos/storage/arr-stack/mylar3/config:/config
-      - /home/satty008/repos/storage/arr-stack/mylar3/comics:/comics
-      - /home/satty008/repos/storage/arr-stack/mylar3/downloads:/downloads
+      - /home/satty008/repos/storage/arr-stack/media/comics:/comics
+      - /home/satty008/repos/storage/arr-stack/media/downloads:/downloads
     ports:
       - "8090:8090"
     restart: unless-stopped
@@ -422,7 +419,6 @@ services:
       - "traefik.http.routers.mylar3-secure.service=mylar3"
       - "traefik.http.services.mylar3.loadbalancer.server.port=8090"
       - "traefik.docker.network=proxy"
-
 
 networks:
   proxy:
