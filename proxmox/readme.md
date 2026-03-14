@@ -75,7 +75,7 @@ pct create 100 local:vztmpl/debian-12-standard_12.7-1_amd64.tar.zst \
 pct list                    # list all containers
 pct start 100               # start container 100
 pct stop 100                # stop container 100
-pct enter 100               # open shell inside container
+pct enter <LXC ID>          # open shell inside container
 pct config 100              # show container config
 ```
 
