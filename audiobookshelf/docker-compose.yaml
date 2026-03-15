@@ -1,0 +1,15 @@
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    restart: unless-stopped
+    ports:
+      - 13378:80
+    volumes:
+      - ${AUDIOBOOKS_LOCATION}:/audiobooks
+      - ${PODCASTS_LOCATION}:/podcasts
+      - ${CONFIG_LOCATION}:/config
+      - ${METADATA_LOCATION}:/metadata
+    environment:
+      - TZ=Europe/Berlin
+    env_file:
+      - stack.env

@@ -1,6 +1,6 @@
 # 🖥️ homelab
 
-My personal self-hosted infrastructure — running on **Proxmox VE** across 2 nodes (Beelink mini PC and an Intel NUC), serving family & friends.
+My personal self-hosted infrastructure — running on **Proxmox VE** across 2 nodes (Beelink mini PC), serving family & friends.
 
 Everything here is documented so it can be reproduced from scratch. If you're starting your own homelab, feel free to use this as a reference.
 
@@ -11,7 +11,7 @@ Everything here is documented so it can be reproduced from scratch. If you're st
 | Layer | Details |
 |---|---|
 | **Hypervisor** | Proxmox VE — 2 nodes |
-| **Hardware** | Beelink mini PC | Intel i5 NUC
+| **Hardware** | Beelink mini PC | Intel NUC7i5BNH |
 | **DNS / Ad Blocking** | PiHole + Unbound (LXC container) |
 | **Containers** | Docker via Portainer (dedicated VM) |
 | **Reverse Proxy** | Nginx Proxy Manager |
@@ -22,6 +22,8 @@ Everything here is documented so it can be reproduced from scratch. If you're st
 
 ## 📦 Services
 
+### 🇩🇪 Stuttgart (Beelink MINI-S12 — Primary Node)
+
 | Service | IP | Description | Status |
 |---|---|---|---|
 | [💰 Actual Budget](./actual-budget/) | 192.168.178.138:5006 | Privacy-first personal finance | ✅ Running |
@@ -29,10 +31,16 @@ Everything here is documented so it can be reproduced from scratch. If you're st
 | [🛡️ PiHole + Unbound](./pihole-unbound/) | 192.168.178.2 | Network-wide ad blocking + recursive DNS | ✅ Running |
 | [📸 Immich](./immich/) | 192.168.178.138:2283 | Self-hosted Google Photos alternative | ✅ Running |
 | [🎧 Audiobookshelf](./audiobookshelf/) | 192.168.178.138:13378 | Audiobook & podcast server | ✅ Running |
-| [🎬 Jellyfin](./jellyfin/) | 192.168.178.22:8096 | Media streaming server | ✅ Running |
 | [🔀 Velocitail](./velocitail/) | 192.168.178.139 | NPM reverse proxy + Tailscale gateway | ✅ Running |
 | [🏠 Home Assistant](./home-assistant/) | 192.168.178.21:8123 | Home automation | 🚧 WIP |
-| [☸️ Kubernetes](./kubernetes/) | — | K8s cluster setup | 🚧 WIP |
+
+### 🇮🇳 India (Hodor — Intel NUC7i5BNH)
+
+| Service | Description | Status |
+|---|---|---|
+| [🎬 Mediastack](./mediastack/) | Jellyfin + mediastack | ✅ Running |
+
+
 
 ---
 
@@ -42,12 +50,12 @@ Everything here is documented so it can be reproduced from scratch. If you're st
 homelab/
 ├── proxmox/               ← Proxmox setup: LXC, VMs, storage, network, PBS
 ├── pihole-unbound/        ← DNS ad blocking via community script + Unbound
-├── velocitail/            ← NPM reverse proxy + Tailscale subnet router
+├── velocitail/            ← NPM reverse proxy + Tailscale subnet router (DE)
 ├── actual-budget/         ← Docker Compose + env example
 ├── paperless-ngx/         ← Docker Compose + env example
 ├── immich/                ← Docker Compose + env example
 ├── audiobookshelf/        ← Docker Compose + env example
-├── jellyfin/              ← Docker Compose + env example
+├── mediastack/            ← Jellyfin + *arr stack on Hodor (India NUC)
 ├── home-assistant/        ← Home Assistant VM (WIP)
 └── kubernetes/            ← K8s manifests (WIP)
 ```
