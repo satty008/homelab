@@ -1,6 +1,6 @@
 # 🖥️ homelab
 
-My personal self-hosted infrastructure — running on **Proxmox VE** across 2 nodes (Beelink mini PC), serving family & friends.
+My personal self-hosted infrastructure — running on **Proxmox VE** across 2 nodes (Beelink MINI-S12 in DE, Intel NUC7i5BNH in India), serving family & friends.
 
 Everything here is documented so it can be reproduced from scratch. If you're starting your own homelab, feel free to use this as a reference.
 
@@ -11,7 +11,7 @@ Everything here is documented so it can be reproduced from scratch. If you're st
 | Layer | Details |
 |---|---|
 | **Hypervisor** | Proxmox VE — 2 nodes |
-| **Hardware** | Beelink mini PC | Intel NUC7i5BNH |
+| **Hardware** | Beelink MINI-S12 (N100) |
 | **DNS / Ad Blocking** | PiHole + Unbound (LXC container) |
 | **Containers** | Docker via Portainer (dedicated VM) |
 | **Reverse Proxy** | Nginx Proxy Manager |
