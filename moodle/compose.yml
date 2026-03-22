@@ -1,0 +1,54 @@
+services:
+  moodle:
+    image: satty008/runmoodle:1.7
+    container_name: moodle
+    ports:
+      - "8000:80"
+    volumes:
+      - moodleData:/var/www/moodledata
+    depends_on:
+      - moodleDB
+    environment:
+      MOODLE_DATABASE_HOST: ${MYSQL_HOST}
+      MOODLE_DATABASE_USER: ${MYSQL_USER}
+      MOODLE_DATABASE_NAME: ${MYSQL_DATABASE}
+      MOODLE_DATABASE_PASSWORD_FILE: /run/secrets/db_password
+      MOODLE_WWWROOT: https://moodle.bhavibhavan.duckdns.org
+    secrets:
+      - db_password
+
+  moodleDB:
+    image: mysql:8.4.5
+    container_name: cloudDB
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - cloudDBdata:/var/lib/mysql
+    secrets:
+      - db_root_password
+      - db_password
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyAdmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: ${MYSQL_HOST}
+      PMA_PORT: ${MYSQL_PORT}
+    depends_on:
+      - moodleDB
+
+secrets:
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+  db_password:
+    file: ./secrets/db_password.txt
+
+volumes:
+  moodleData:
+  cloudDBdata:
