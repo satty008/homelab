@@ -1,0 +1,36 @@
+# Environment files — never commit real secrets
+stack.env
+.env
+*.env
+!*.env.example
+
+# Paperless consume/export folders — can contain personal documents
+paperless-ngx/consume/
+paperless-ngx/export/
+
+# Immich library and database — large binary data
+immich/library/
+immich/postgres/
+
+# Audiobookshelf media — large binary data
+audiobookshelf/audiobooks/
+audiobookshelf/podcasts/
+
+# Mediastack downloads and media — large binary data
+mediastack/downloads/
+mediastack/media/
+
+# NPM data — contains certificates and keys
+velocitail/letsencrypt/
+velocitail/data/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
