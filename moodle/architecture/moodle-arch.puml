@@ -1,0 +1,53 @@
+@startuml Moodle_Architecture_Proxmox
+
+!define COMPONENTPATH https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master
+title Moodle LMS Architecture on Proxmox with External Nginx
+
+skinparam backgroundColor #312a2a
+skinparam defaultFontColor #FFFFFF
+skinparam arrow {
+    Color #FFFFFF
+    FontColor #FFFFFF
+}
+skinparam rectangle {
+    BackgroundColor #1a1a1a
+    BorderColor #ffffff
+    FontColor #FFFFFF
+}
+
+skinparam component {
+    BackgroundColor #2a2a2a
+    BorderColor #ffffff
+    FontColor #FFFFFF
+}
+
+rectangle "End Users" as EndUsers #1a1a1a {
+    component "Users (Web Browsers)" as Users #2a2a2a
+}
+
+rectangle "External Nginx VM\n(Separate Proxmox VM)" as ExtNginx #2d5a2d {
+    component "Nginx\nSSL/Reverse Proxy\nmoodle.bhavibhavan.duckdns.org:443" as Nginx #4f8f4f
+    component "SSL Certificates\n(External Management)" as Certbot #4f8f4f
+}
+
+rectangle "Moodle Proxmox VM" as MoodleVM #1a1a1a {
+    rectangle "Docker Containers" as Containers #2a2a2a {
+        component "Moodle Container\nApache + PHP\nPort 8000" as Moodle #d35a6c
+        component "MySQL Container\nMySQL 8.4.5\nPort 3306" as MySQL #377d99
+        component "phpMyAdmin\nPort 8080" as PhpMyAdmin #c0a81f
+    }
+    
+    rectangle "Persistent Volumes" as Volumes #2a2a2a {
+        component "moodleData\n(Moodle files & cache)" as MoodleData #995b99
+        component "cloudDBdata\n(MySQL data)" as DBData #995b99
+    }
+}
+
+Users ..> Nginx : HTTPS Request
+Nginx ..> Moodle : HTTP Proxy (Port 8000)
+Moodle ..> MySQL : Query
+PhpMyAdmin ..> MySQL : Admin
+Moodle ..> MoodleData : Read/Write
+MySQL ..> DBData : Read/Write
+
+@enduml
