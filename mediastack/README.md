@@ -32,6 +32,7 @@ Requests (Jellyseerr)
 | Service | Port | Role |
 |---|---|---|
 | Jellyfin | 8096 | Media server |
+| Audiobookshelf | 13378 | Audiobook, podcast & book server |
 | qBittorrent | 49152 | Download client (WebUI) |
 | Prowlarr | 9696 | Indexer manager |
 | Sonarr | 8989 | TV show automation |
@@ -54,6 +55,7 @@ All data lives under `/data/` on the Hodor VM:
 /data/
 ├── config/                  ← app configs (one folder per service)
 │   ├── jellyfin/
+│   ├── audiobookshelf/
 │   ├── sonarr/
 │   ├── radarr/
 │   └── ...
@@ -61,6 +63,8 @@ All data lives under `/data/` on the Hodor VM:
 └── media/                   ← final media library
     ├── tv/
     ├── movies/
+    ├── audiobooks/
+    ├── podcasts/
     ├── books/
     ├── comics/
     └── adult/
@@ -133,8 +137,8 @@ After deploying, connect the services in this order:
 docker network create npm_proxy
 
 # Create data directories
-mkdir -p /data/{config,downloads,media/{tv,movies,books,comics,adult}}
-mkdir -p /data/config/{jellyfin,qbittorrent,sonarr,radarr,bazarr,prowlarr,whisparr,mylar3,lazylibrarian,jellyseerr,homepage}
+mkdir -p /data/{config,downloads,media/{tv,movies,audiobooks,podcasts,books,comics,adult}}
+mkdir -p /data/config/{jellyfin,audiobookshelf,audiobookshelf/metadata,qbittorrent,sonarr,radarr,bazarr,prowlarr,whisparr,mylar3,lazylibrarian,jellyseerr,homepage}
 
 # Deploy
 docker compose up -d

@@ -132,6 +132,26 @@ services:
     networks:
       - npm_proxy
 
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    environment:
+      - TZ=Asia/Kolkata
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - "13378:80"
+    volumes:
+      - /data/media/audiobooks:/audiobooks
+      - /data/media/podcasts:/podcasts
+      - /data/media/books:/books
+      - /data/media/comics:/comics
+      - /data/config/audiobookshelf:/config
+      - /data/config/audiobookshelf/metadata:/metadata
+    restart: unless-stopped
+    networks:
+      - npm_proxy
+
   # =================================================
   # PHASE 3 – BOOKS, COMICS, REQUESTS & EXTRAS
   # =================================================
