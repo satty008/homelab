@@ -57,15 +57,36 @@ The architecture of the deployment is documented in the [`architecture`](./archi
 * Handles ports **80** and **443** for your domain (`moodle.bhavibhavan.duckdns.org`).
 * SSL certificates managed externally (not via Certbot).
 
-## 🔑 Secrets Management
+## 🔑 Secrets & Configuration Management
 
-Instead of Docker secrets, this setup uses **plain text secret files** stored locally inside a `secrets/` folder:
+### Environment Variables (`.env`)
+
+The `.env` file contains non-sensitive database configuration:
+
+```bash
+MYSQL_DATABASE=moodledatabase
+MYSQL_USER=moodleuser
+MYSQL_HOST=moodleDB
+MYSQL_PORT=3306
+```
+
+A template is provided as `.env.example`. Copy it to `.env` and keep it committed (it contains no secrets).
+
+```bash
+cp .env.example .env
+```
+
+### Secrets (Passwords)
+
+Instead of storing passwords in `.env`, this setup uses **secure secret files** in the `secrets/` folder:
 
 ```bash
 mkdir secrets
 echo "secure_root_password" > secrets/db_root_password.txt
 echo "secure_db_password" > secrets/db_password.txt
 ```
+
+**Important:** The `secrets/` folder is listed in `.gitignore` and should **never be committed** to version control.
 
 In `compose.yml`, these files are mounted and read by MySQL and Moodle containers.
 
