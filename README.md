@@ -30,15 +30,15 @@ Everything here is documented so it can be reproduced from scratch. If you're st
 | [📄 Paperless-ngx](./paperless-ngx/) | 192.168.178.138:8010 | OCR document management | ✅ Running |
 | [🛡️ PiHole + Unbound](./pihole-unbound/) | 192.168.178.2 | Network-wide ad blocking + recursive DNS | ✅ Running |
 | [📸 Immich](./immich/) | 192.168.178.138:2283 | Self-hosted Google Photos alternative | ✅ Running |
-| [🎧 Audiobookshelf](./audiobookshelf/) | 192.168.178.138:13378 | Audiobook & podcast server | ✅ Running |
 | [🔀 Velocitail](./velocitail/) | 192.168.178.139 | NPM reverse proxy + Tailscale gateway | ✅ Running |
+| [📚 Moodle](./moodle/) | 192.168.178.40:8000 | Learning Management System | ✅ Running |
 | [🏠 Home Assistant](./home-assistant/) | 192.168.178.21:8123 | Home automation | 🚧 WIP |
 
 ### 🇮🇳 India (Hodor — Intel NUC7i5BNH)
 
 | Service | Description | Status |
 |---|---|---|
-| [🎬 Mediastack](./mediastack/) | Jellyfin + mediastack | ✅ Running |
+| [🎬 Mediastack](./mediastack/) | Jellyfin + full media stack + Audiobookshelf | ✅ Running |
 
 
 
@@ -54,8 +54,8 @@ homelab/
 ├── actual-budget/         ← Docker Compose + env example
 ├── paperless-ngx/         ← Docker Compose + env example
 ├── immich/                ← Docker Compose + env example
-├── audiobookshelf/        ← Docker Compose + env example
-├── mediastack/            ← Jellyfin + *arr stack on Hodor (India NUC)
+├── moodle/                ← Moodle LMS + GitHub Actions CI/CD
+├── mediastack/            ← Jellyfin + *arr stack + ABS on Hodor (India NUC)
 ├── home-assistant/        ← Home Assistant VM (WIP)
 └── kubernetes/            ← K8s manifests (WIP)
 ```
@@ -78,7 +78,7 @@ New to homelabs? Start here:
 1. **[Proxmox setup](./proxmox/)** — install Proxmox, create VMs and LXC containers
 2. **[PiHole + Unbound](./pihole-unbound/)** — set up DNS first, everything else depends on it
 3. **[Velocitail](./velocitail/)** — set up NPM + Tailscale before deploying apps
-4. Then deploy any app from its folder
+4. Then deploy any app from its folder — each has its own README
 
 ---
 
