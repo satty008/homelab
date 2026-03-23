@@ -1,6 +1,6 @@
 services:
   moodle:
-    image: satty008/runmoodle:1.7
+    image: satty008/runmoodle:main
     container_name: moodle
     ports:
       - "8000:80"
