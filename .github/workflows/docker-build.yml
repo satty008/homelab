@@ -63,24 +63,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: satty008/runmoodle
-          short-description: "Moodle LMS with Apache + PHP on Proxmox"
-          description: |
-            Custom Moodle 5.0 Docker image for deployment on Proxmox VMs.
-            
-            Features:
-            - Moodle 5.0 Stable
-            - Apache + PHP 8.4
-            - MySQL 8.4.5 compatible
-            - Auto-configuration via environment variables
-            
-            For setup instructions, see: https://github.com/satty008/homelab/tree/main/moodle
-
       - name: Notify Build Success
         if: success()
         run: |
