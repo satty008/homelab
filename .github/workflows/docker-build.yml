@@ -1,0 +1,85 @@
+name: Build and Push Moodle Docker Image
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'moodle/Dockerfile'
+      - 'moodle/entrypoint.sh'
+      - 'moodle/compose.yml'
+      - '.github/workflows/docker-build.yml'
+  release:
+    types: [published]
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: satty008/runmoodle
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./moodle
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: satty008/runmoodle
+          short-description: "Moodle LMS with Apache + PHP on Proxmox"
+          description: |
+            Custom Moodle 5.0 Docker image for deployment on Proxmox VMs.
+            
+            Features:
+            - Moodle 5.0 Stable
+            - Apache + PHP 8.4
+            - MySQL 8.4.5 compatible
+            - Auto-configuration via environment variables
+            
+            For setup instructions, see: https://github.com/satty008/homelab/tree/main/moodle
+
+      - name: Notify Build Success
+        if: success()
+        run: |
+          echo "✅ Docker image successfully built and pushed!"
+          echo "📦 Image: ${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}"
+          echo "🔗 Pull command: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
